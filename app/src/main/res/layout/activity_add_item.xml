@@ -32,7 +32,8 @@
             android:layout_below="@+id/AddItemImage"
             android:layout_centerHorizontal="true"
             android:background="#51cdfe"
-            android:textColor="#ffffff"></EditText>
+            android:textColor="#ffffff"
+            android:clickable="false"></EditText>
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="40dp"
@@ -64,11 +65,12 @@
             android:layout_below="@id/AddItemDescription"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:onClick="viewonmapClick"
+            android:onClick="addItemClick"
             android:gravity="center"
             android:background="@color/accent_material_light"
             android:textSize="20dp"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:clickable="true" />
 
 
     </RelativeLayout>

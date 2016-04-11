@@ -4,17 +4,24 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -40,28 +47,12 @@ public class AddItem extends AppCompatActivity {
 
 
         imgPreview = (ImageView) findViewById(R.id.AddItemImage);
-//        btnCapturePicture = (Button) findViewById(R.id.btnCapturePicture);
-
-        /**
-         * Capture image button click event
-         * */
-//        btnCapturePicture.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                // capture picture
-//                captureImage();
-//            }
-//        });
-
     }
 
     public void captureItemImage(View view){
         captureImage();
     }
-    /**
-     * Checking device has camera hardware or not
-     * */
+
     private boolean isDeviceSupportCamera() {
         if (getApplicationContext().getPackageManager().hasSystemFeature(
                 PackageManager.FEATURE_CAMERA)) {
@@ -72,9 +63,7 @@ public class AddItem extends AppCompatActivity {
             return false;
         }
     }
-    /*
- * Capturing Camera Image will lauch camera app requrest image capture
- */
+
     private void captureImage() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -85,10 +74,7 @@ public class AddItem extends AppCompatActivity {
         // start the image capture Intent
         startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
     }
-    /**
-     * Here we store the file url as it will be null after returning from camera
-     * app
-     */
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -105,9 +91,7 @@ public class AddItem extends AppCompatActivity {
         // get the file url
         fileUri = savedInstanceState.getParcelable("file_uri");
     }
-    /**
-     * Receiving activity result method will be called after closing the camera
-     * */
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // if the result is capturing Image
@@ -134,6 +118,7 @@ public class AddItem extends AppCompatActivity {
         try {
             imgPreview.setVisibility(View.VISIBLE);
 
+//            Bitmap rotatedBitmap;
             // bimatp factory
             BitmapFactory.Options options = new BitmapFactory.Options();
 
@@ -141,17 +126,65 @@ public class AddItem extends AppCompatActivity {
             // images
             options.inSampleSize = 8;
 
-            final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
+
+
+            Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
                     options);
+
+
+
+////            try
+////            {
+//
+//                bitmap = ThumbnailUtils.extractThumbnail(bitmap, 50,50);
+//                // NOTE incredibly useful trick for cropping/resizing square
+//                // http://stackoverflow.com/a/17733530/294884
+//
+////                Matrix m = new Matrix();
+////                m.postRotate( Utils.neededRotation(Utils.tempFileForAnImage()) );
+//
+//            Matrix matrix = new Matrix();
+//            matrix.postRotate(90);
+//            rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+//
+////                bitmap = Bitmap.createBitmap(bitmap,
+////                        0, 0, bitmap.getWidth(), bitmap.getHeight(),
+////                        m, true);
+//
+////                yourImageView.setImageBitmap(cameraBmp);
+//
+////                // to convert to bytes...
+////                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+////                cameraBmp.compress(Bitmap.CompressFormat.JPEG, 75, baos);
+////                //or say cameraBmp.compress(Bitmap.CompressFormat.PNG, 0, baos);
+////                imageBytesRESULT = baos.toByteArray();
+//
+////            } catch (FileNotFoundException e)
+////            {
+////                e.printStackTrace();
+////            } catch (IOException e)
+////            {
+////                e.printStackTrace();
+////            }
+//
+//
+//
+//
+//
+//
+
+
+
+
+            imgPreview.setImageResource(android.R.color.transparent);
+            imgPreview.setImageBitmap(null);
             imgPreview.setImageBitmap(bitmap);
             //Make text invisible
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }
-    /**
-     * Creating file uri to store image/video
-     */
+
     public Uri getOutputMediaFileUri(int type) {
         return Uri.fromFile(getOutputMediaFile(type));
     }
@@ -185,5 +218,9 @@ public class AddItem extends AppCompatActivity {
         }
 
         return mediaFile;
+    }
+    public void addItemClick(View view){
+        Intent intent = new Intent(this, Main2Activity.class);
+        startActivity(intent);
     }
 }
