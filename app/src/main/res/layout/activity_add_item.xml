@@ -10,7 +10,7 @@
         android:orientation="horizontal" >
 
         <ImageView
-            android:id="@+id/ItemDetailImage"
+            android:id="@+id/AddItemImage"
             android:layout_width="fill_parent"
             android:layout_height="300dp"
             android:layout_gravity="center_horizontal"
@@ -18,51 +18,50 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:src="@drawable/nano" />
+            android:background="#ccf09f"
+            android:clickable="true"
+            android:onClick="captureItemImage"/>
 
-        <TextView
+        <EditText
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Item Name"
-            android:id="@+id/ItemDetailItemName"
-            android:layout_below="@+id/ItemDetailImage"
+            android:hint="Enter Item Name"
+            android:id="@+id/AddItemItemName"
+            android:layout_below="@+id/AddItemImage"
             android:layout_centerHorizontal="true"
             android:background="#51cdfe"
-            android:enabled="false"
-            android:editable="false"
-            android:textColor="#ffffff" />
-
-        <TextView
+            android:textColor="#ffffff"></EditText>
+        <EditText
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Item Date and Time"
+            android:hint="Enter Item Date and Time"
             android:gravity="center"
-            android:id="@+id/ItemDetailDateTime"
-            android:layout_below="@+id/ItemDetailItemName"
+            android:id="@+id/AddItemDateTime"
+            android:layout_below="@+id/AddItemItemName"
             android:layout_marginTop="33dp"
             android:background="#daf6f2" />
 
-        <TextView
+        <EditText
             android:layout_width="fill_parent"
             android:layout_height="200dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Item Description"
+            android:hint="Enter Item Description"
             android:gravity="center"
-            android:id="@+id/ItemDetailDescription"
-            android:layout_below="@+id/ItemDetailDateTime"
+            android:id="@+id/AddItemDescription"
+            android:layout_below="@+id/AddItemDateTime"
             android:layout_marginTop="33dp"
             android:background="#daf6f2"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:text="View on Map"
+            android:text="ADD Item"
             android:layout_marginTop="33dp"
-            android:id="@+id/ItemDetailMapButton"
-            android:layout_below="@id/ItemDetailDescription"
+            android:id="@+id/AddItemButton"
+            android:layout_below="@id/AddItemDescription"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:onClick="viewonmapClick"

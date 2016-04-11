@@ -48,6 +48,7 @@ public class Main2Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final Context context = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -61,6 +62,8 @@ public class Main2Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Will lead to a screen to add a new Knot", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                Intent intent = new Intent(context,AddItem.class);
+                startActivity(intent);
             }
         });
 
