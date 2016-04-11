@@ -18,7 +18,7 @@
         android:text="LOGIN"
         android:id="@+id/SignInButton"
         android:onClick="loginButtonClick"
-        android:layout_marginTop="106dp"
+        android:layout_marginTop="200dp"
         android:layout_below="@+id/userIDText"
         android:layout_alignLeft="@+id/userIDText"
         android:layout_alignStart="@+id/userIDText"
@@ -37,6 +37,7 @@
         android:layout_alignLeft="@+id/SignInButton"
         android:layout_alignStart="@+id/SignInButton" />
 
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,17 +45,22 @@
         android:ems="10"
         android:id="@+id/userIDText"
         android:layout_marginTop="52dp"
-        android:layout_below="@+id/passwordText"
         android:layout_alignLeft="@+id/passwordText"
-        android:layout_alignStart="@+id/passwordText" />
-
+        android:layout_alignStart="@+id/passwordText"
+        android:hint="UserID"
+        android:gravity="center"/>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/passwordText"
-        android:layout_below="@+id/editText"
+        android:gravity="center"
+        android:layout_below="@+id/userIDText"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp" />
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="60dp"
+        android:hint="Password"/>
+
+
 </RelativeLayout>

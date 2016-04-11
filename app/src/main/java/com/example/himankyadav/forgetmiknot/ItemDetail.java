@@ -14,7 +14,7 @@ public class ItemDetail extends AppCompatActivity {
         setContentView(R.layout.activity_item_detail);
     }
     public void viewonmapClick(View view){
-        Intent intent = new Intent(this, Main2Activity.class);
+        Intent intent = new Intent(this, ItemMapView.class);
         startActivity(intent);
     }
 
