@@ -46,6 +46,7 @@ public class ItemDetail extends AppCompatActivity {
             image.setImageResource(R.drawable.baby);
         }
         else{
+            decodeUri(Uri.parse(p.getImage()));
           File imgFile = new File(p.getImage());
           if(imgFile.exists())
           {
@@ -57,8 +58,10 @@ public class ItemDetail extends AppCompatActivity {
 //            Bitmap scaled = Bitmap.createScaledBitmap(myBitmap, 512, nh, true);
 //              Log.d("IMGSTUFF", "DETAIL: scaled bitmap");
 //            image.setImageBitmap(myBitmap);
-              decodeUri(Uri.parse(imgFile.getAbsolutePath()));
+              decodeUri(Uri.parse(p.getImage()));
+//              image.setImageURI(Uri.parse(imgFile.toString()));
               Log.d("IMGSTUFF", "DETAIL: set bitmap");
+
           }
         }
     }

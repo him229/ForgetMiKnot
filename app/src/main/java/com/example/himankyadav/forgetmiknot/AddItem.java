@@ -42,7 +42,7 @@ public class AddItem extends AppCompatActivity {
     // directory name to store captured images and videos
     private static final String IMAGE_DIRECTORY_NAME = "ForgetMiKnot";
 
-    private Uri fileUri; // file url to store image/video
+    private Uri fileUri = null; // file url to store image/video
 
     private ImageView imgPreview;
 
@@ -232,7 +232,7 @@ public class AddItem extends AppCompatActivity {
         String itemDateandTime = ((EditText) findViewById(R.id.AddItemDateTime)).getText().toString();
         String description = ((EditText) findViewById(R.id.AddItemDescription)).getText().toString();
 
-        addItemToList(itemName, description, itemDateandTime, imgPath, "0","0");
+        addItemToList(itemName, description, itemDateandTime, fileUri.toString(), "0","0");
         Intent intent = new Intent(this, Main2Activity.class);
         startActivity(intent);
 
@@ -243,22 +243,4 @@ public class AddItem extends AppCompatActivity {
         ItemMaster.getItems().add(newItem);
         new ThreadStuff().start();
     }
-//    public String BitMapToString(Bitmap bitmap){
-//        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-//        byte [] b=baos.toByteArray();
-//        String temp=Base64.encodeToString(b, Base64.DEFAULT);
-//        return temp;
-//    }
-//
-//    public Bitmap StringToBitMap(String encodedString){
-//        try {
-//            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
-//            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-//            return bitmap;
-//        } catch(Exception e) {
-//            e.getMessage();
-//            return null;
-//        }
-//    }
 }
