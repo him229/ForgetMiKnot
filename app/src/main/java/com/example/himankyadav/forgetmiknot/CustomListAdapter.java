@@ -7,6 +7,8 @@ package com.example.himankyadav.forgetmiknot;
     import android.content.Context;
     import android.graphics.Bitmap;
     import android.graphics.BitmapFactory;
+    import android.net.Uri;
+    import android.os.ParcelFileDescriptor;
     import android.util.Log;
     import android.view.LayoutInflater;
     import android.view.View;
@@ -16,6 +18,9 @@ package com.example.himankyadav.forgetmiknot;
     import android.widget.TextView;
 
     import java.io.File;
+    import java.io.FileDescriptor;
+    import java.io.FileNotFoundException;
+    import java.io.IOException;
     import java.util.ArrayList;
     import java.util.List;
 
@@ -67,40 +72,71 @@ public class CustomListAdapter extends ArrayAdapter<ItemMaster> {
             else{
 //                File imgFile = new  File(listOfItems.get(position).getImage());
 //                if(imgFile.exists()){
-                Log.d("GETTING HERE", "********** INSIDE READING IMAGE");
-                Bitmap myBitmap = BitmapFactory.decodeFile(p.getImage());
-                imageView.setImageBitmap(myBitmap);
+                Uri uri = Uri.parse(p.getImage());
+                Log.d("IMGSTUFF", "********** CUSTOMADAP uri "+uri.toString());
+                ParcelFileDescriptor parcelFD1 = null;
+                try {
+                    parcelFD1 = getContext().getContentResolver().openFileDescriptor(uri, "r");
+                    Bitmap myBitmap = decodeUri(parcelFD1);
+                    imageView.setImageBitmap(myBitmap);
+                    Log.d("IMGSTUFF", "********** CUSTOMADAP - after calling decodeuri");
+                }
+                catch (FileNotFoundException e) {
+                    Log.d("IMGSTUFF", "CUSTOMLISTADAP File404");}
             }
             extratxt.setText(p.getDateandtime());
         }
 
         return v;
     }
+    public Bitmap decodeUri(ParcelFileDescriptor parcelFD) {
+//        ParcelFileDescriptor parcelFD = null;
+//        try {
+//            parcelFD = getContentResolver().openFileDescriptor(uri, "r");
+            FileDescriptor imageSource = parcelFD.getFileDescriptor();
+            // Decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeFileDescriptor(imageSource, null, o);
 
-//        public View getView(int position,View view,ViewGroup parent) {
-//            LayoutInflater inflater=context.getLayoutInflater();
-//            View rowView=inflater.inflate(R.layout.mylist, null,true);
-//
-//            Log.d("GETTING HERE", "********** INSIDE ADAPTER TEXT");
-//            TextView txtTitle = (TextView) rowView.findViewById(R.id.Itemname);
-//            ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-//            TextView extratxt = (TextView) rowView.findViewById(R.id.ItemnameDetail);
-//
-//            List<ItemMaster> listOfItems = ItemMaster.getItems();
-//            txtTitle.setText(listOfItems.get(position).getItemName());
-//            if (listOfItems.get(position).getImage() == "null"){
-//                imageView.setImageResource(R.drawable.baby);
-//            }
-//            else{
-////                File imgFile = new  File(listOfItems.get(position).getImage());
-////
-////                if(imgFile.exists()){
-//                Log.d("GETTING HERE", "********** INSIDE READING IMAGE");
-//                Bitmap myBitmap = BitmapFactory.decodeFile(listOfItems.get(position).getImage());
-//                imageView.setImageBitmap(myBitmap);
-//            }
-//            extratxt.setText(listOfItems.get(position).getDateandtime());
-//            return rowView;
-//
-//        };
+            // the new size we want to scale to
+            final int REQUIRED_SIZE = 1024;
+
+            // Find the correct scale value. It should be the power of 2.
+            int width_tmp = o.outWidth, height_tmp = o.outHeight;
+            int scale = 1;
+            while (true) {
+                if (width_tmp < REQUIRED_SIZE && height_tmp < REQUIRED_SIZE) {
+                    break;
+                }
+                width_tmp /= 2;
+                height_tmp /= 2;
+                scale *= 2;
+            }
+            Log.d("IMGSTUFF", "DETAIL: here");
+            // decode with inSampleSize
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            Bitmap bitmap = BitmapFactory.decodeFileDescriptor(imageSource, null, o2);
+
+
+//            ImageView image = (ImageView)findViewById(R.id.ItemDetailImage);
+//            image.setImageBitmap(bitmap);
+            Log.d("IMGSTUFF", "CUSTOMLISTADAPTER: Uri function before returning bitmap");
+            return bitmap;
+
+//        } catch (FileNotFoundException e) {
+//            Log.d("IMGSTUFF", "File404");
+//            // handle errors
+//        } catch (IOException e) {
+//            Log.d("IMGSTUFF", "IO Error");
+//        } finally {
+//            if (parcelFD != null)
+//                try {
+//                    parcelFD.close();
+//                } catch (IOException e) {
+//                    Log.d("IMGSTUFF", "IOException");
+//                }
+//        }
+    }
 }

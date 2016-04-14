@@ -187,7 +187,7 @@ public class AddItem extends AppCompatActivity {
         String itemName = ((EditText) findViewById(R.id.AddItemItemName)).getText().toString();
         String itemDateandTime = ((EditText) findViewById(R.id.AddItemDateTime)).getText().toString();
         String description = ((EditText) findViewById(R.id.AddItemDescription)).getText().toString();
-        String fileUriString = (fileUri==null) ? "null" : fileUri.toString()
+        String fileUriString = (fileUri==null) ? "null" : fileUri.toString();
         addItemToList(itemName, description, itemDateandTime, fileUriString, "0","0");
         Intent intent = new Intent(this, Main2Activity.class);
         startActivity(intent);
