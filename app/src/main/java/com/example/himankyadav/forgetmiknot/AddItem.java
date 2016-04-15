@@ -47,8 +47,6 @@ public class AddItem extends AppCompatActivity {
     private ImageView imgPreview;
 
     private Bitmap bitmap;
-    static String imgPath = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,46 +139,6 @@ public class AddItem extends AppCompatActivity {
             bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
                     options);
 
-////            try
-////            {
-//
-//                bitmap = ThumbnailUtils.extractThumbnail(bitmap, 50,50);
-//                // NOTE incredibly useful trick for cropping/resizing square
-//                // http://stackoverflow.com/a/17733530/294884
-//
-////                Matrix m = new Matrix();
-////                m.postRotate( Utils.neededRotation(Utils.tempFileForAnImage()) );
-//
-//            Matrix matrix = new Matrix();
-//            matrix.postRotate(90);
-//            rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-//
-////                bitmap = Bitmap.createBitmap(bitmap,
-////                        0, 0, bitmap.getWidth(), bitmap.getHeight(),
-////                        m, true);
-//
-////                yourImageView.setImageBitmap(cameraBmp);
-//
-////                // to convert to bytes...
-////                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-////                cameraBmp.compress(Bitmap.CompressFormat.JPEG, 75, baos);
-////                //or say cameraBmp.compress(Bitmap.CompressFormat.PNG, 0, baos);
-////                imageBytesRESULT = baos.toByteArray();
-//
-////            } catch (FileNotFoundException e)
-////            {
-////                e.printStackTrace();
-////            } catch (IOException e)
-////            {
-////                e.printStackTrace();
-////            }
-//
-//
-//
-//
-//
-//
-
             imgPreview.setImageResource(android.R.color.transparent);
             imgPreview.setImageBitmap(null);
             imgPreview.setImageBitmap(bitmap);
@@ -215,9 +173,7 @@ public class AddItem extends AppCompatActivity {
                 Locale.getDefault()).format(new Date());
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE) {
-            imgPath = mediaStorageDir.getPath() + File.separator
-                    + "IMG_" + timeStamp + ".jpg";
-//            Log.d("imgpath ",imgPath);
+
             mediaFile = new File(mediaStorageDir.getPath() + File.separator
                     + "IMG_" + timeStamp + ".jpg");
         }
@@ -231,8 +187,8 @@ public class AddItem extends AppCompatActivity {
         String itemName = ((EditText) findViewById(R.id.AddItemItemName)).getText().toString();
         String itemDateandTime = ((EditText) findViewById(R.id.AddItemDateTime)).getText().toString();
         String description = ((EditText) findViewById(R.id.AddItemDescription)).getText().toString();
-
-        addItemToList(itemName, description, itemDateandTime, fileUri.toString(), "0","0");
+        String fileUriString = (fileUri==null) ? "null" : fileUri.toString()
+        addItemToList(itemName, description, itemDateandTime, fileUriString, "0","0");
         Intent intent = new Intent(this, Main2Activity.class);
         startActivity(intent);
 

@@ -47,22 +47,6 @@ public class ItemDetail extends AppCompatActivity {
         }
         else{
             decodeUri(Uri.parse(p.getImage()));
-          File imgFile = new File(p.getImage());
-          if(imgFile.exists())
-          {
-              Log.d("IMGSTUFF", "DETAIL: Getting into reading user image");
-//              Log.d("IMGSTUFF", "abs path "+ imgFile.getAbsolutePath());
-//            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-//              Log.d("IMGSTUFF", "DETAIL: Got Bitmap");
-//            int nh = (int) (myBitmap.getHeight() * (512.0 / myBitmap.getWidth()) );
-//            Bitmap scaled = Bitmap.createScaledBitmap(myBitmap, 512, nh, true);
-//              Log.d("IMGSTUFF", "DETAIL: scaled bitmap");
-//            image.setImageBitmap(myBitmap);
-              decodeUri(Uri.parse(p.getImage()));
-//              image.setImageURI(Uri.parse(imgFile.toString()));
-              Log.d("IMGSTUFF", "DETAIL: set bitmap");
-
-          }
         }
     }
 
@@ -117,7 +101,7 @@ public class ItemDetail extends AppCompatActivity {
                 try {
                     parcelFD.close();
                 } catch (IOException e) {
-                    // ignored
+                    Log.d("IMGSTUFF", "IOException");
                 }
         }
     }
