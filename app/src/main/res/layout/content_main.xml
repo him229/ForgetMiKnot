@@ -30,6 +30,7 @@
         android:layout_height="wrap_content"
         android:text="Sign UP"
         android:id="@+id/button"
+        android:onClick="signupButtonClick"
         android:layout_alignTop="@+id/SignInButton"
         android:layout_marginTop="78dp"
         android:layout_alignRight="@+id/SignInButton"

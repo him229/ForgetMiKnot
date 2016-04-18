@@ -60,7 +60,7 @@ public class Main2Activity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Will lead to a screen to add a new Knot", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Add a new Knot", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 Intent intent = new Intent(context,AddItem.class);
                 startActivity(intent);
