@@ -18,4 +18,5 @@ public class ItemDetail extends AppCompatActivity {
         startActivity(intent);
     }
 
+
 }

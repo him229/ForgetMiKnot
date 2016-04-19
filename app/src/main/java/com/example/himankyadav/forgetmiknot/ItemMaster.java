@@ -1,15 +1,33 @@
 package com.example.himankyadav.forgetmiknot;
 
+import android.graphics.Bitmap;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by himankyadav on 4/16/16.
  */
 public class ItemMaster {
+    static public List<ItemMaster> items = new ArrayList<>();
+    static public List<ItemMaster> getItems(){
+        return items;
+    }
     String itemName = null;
     String description = null;
     String dateandtime = null;
-    String imageString = null;
+    Bitmap image = null;
     String latitute = null;
     String longitute = null;
+
+    public ItemMaster(String longitute, Bitmap image, String latitute, String dateandtime, String description, String itemName) {
+        this.longitute = longitute;
+        this.image = image;
+        this.latitute = latitute;
+        this.dateandtime = dateandtime;
+        this.description = description;
+        this.itemName = itemName;
+    }
 
     public String getLatitute() {
         return latitute;
@@ -45,10 +63,10 @@ public class ItemMaster {
     public void setDateandtime(String dateandtime) {
         this.dateandtime = dateandtime;
     }
-    public String getImageString() {
-        return imageString;
+    public Bitmap getImage() {
+        return image;
     }
-    public void setImageString(String imageString) {
-        this.imageString = imageString;
+    public void setImage(Bitmap image) {
+        this.image = image;
     }
 }

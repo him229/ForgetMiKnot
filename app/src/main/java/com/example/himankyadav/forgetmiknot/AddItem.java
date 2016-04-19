@@ -233,110 +233,23 @@ public class AddItem extends AppCompatActivity {
         String itemDateandTime = ((EditText) findViewById(R.id.AddItemDateTime)).getText().toString();
         String description = ((EditText) findViewById(R.id.AddItemDescription)).getText().toString();
 
-        writeXML("himank",itemName, description, itemDateandTime, bitmap, "0","0");
+        addItemToList(itemName, description, itemDateandTime, bitmap, "0","0");
         Intent intent = new Intent(this, Main2Activity.class);
         startActivity(intent);
+
     }
 
-    public void writeXML(String user, String name, String description, String dateandtime, Bitmap image, String latitude, String longitude) {
-
-
-        // Find the root of the external storage.
-        // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
-
-        File root = android.os.Environment.getExternalStorageDirectory();
-
-        // See http://stackoverflow.com/questions/3551821/android-write-to-sd-card-folder
-
-        File dir = new File (root.getAbsolutePath() + "/forgetmiknot");
-        dir.mkdirs();
-        File file = new File(dir, "myData.txt");
-
-        try {
-            FileOutputStream f = new FileOutputStream(file,true);
-            PrintWriter pw = new PrintWriter(f);
-            StringBuffer dataXML = new StringBuffer();
-            dataXML.append("<item" + " user=\""+user+"\">\n");
-            dataXML.append("\t<name>" + name + "</name>\n");
-            dataXML.append("\t<description>" + description + "</description>\n");
-            dataXML.append("\t<dateandtime>" + dateandtime + "</dateandtime>\n");
-            dataXML.append("\t<latitude>" + latitude + "</latitude>\n");
-            dataXML.append("\t<longitude>" + longitude + "</longitude>\n");
-            if (bitmap==null){
-                dataXML.append("\timageisnull \n");
-            }
-            else {
-                dataXML.append("\t<image>" + BitMapToString(image) + "</image>\n");
-            }
-            dataXML.append("</item>\n");
-//
-//            dataXML.append("<image>" + "" + "</image>\n");
-            pw.append(dataXML.toString());
-//            pw.println("Hello");
-            pw.flush();
-            pw.close();
-            f.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            Log.i("ERR: ", "******* File not found. Did you" +
-                    " add a WRITE_EXTERNAL_STORAGE permission to the   manifest?");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-
-
-
-//
-//        try {
-//            String xmlFileName = "my_data";
-//            FileOutputStream fOut = openFileOutput(xmlFileName + ".xml",
-//                    MODE_APPEND);
-//            StringBuffer dataXML = new StringBuffer();
-//            dataXML.append("<name>" + name + "</name>\n");
-//            dataXML.append("<description>" + description + "</description>\n");
-//            dataXML.append("<dateandtime>" + dateandtime + "</dateandtime>\n");
-//            dataXML.append("<latitude>" + latitude + "</latitude>\n");
-//            dataXML.append("<longitude>" + longitude + "</longitude>\n");
-////            dataXML.append("<image>" + BitMapToString(image) + "</image>\n");
-//            dataXML.append("<image>" + "" + "</image>\n");
-//
-//            fOut.write(dataXML.toString().getBytes());
-//            fOut.close();
-//
-////            OutputStreamWriter osw = new OutputStreamWriter(fOut);
-////            osw.write(dataXML.toString());
-////            osw.flush();
-////            osw.close();
-//            Toast.makeText(getBaseContext(), "here - "+this.getFilesDir().getAbsoluteFile().toString(), Toast.LENGTH_LONG).show();
-//            Log.e("FILE WRITING","wrote");
-//
-//            try{
-//                FileInputStream fin = openFileInput("my_data.xml");
-//                int c;
-//                String temp="";
-//
-//                while( (c = fin.read()) != -1){
-//                    temp = temp + Character.toString((char)c);
-//                }
-//                Log.e("FILE READ ",temp);
-////                Toast.makeText(getBaseContext(),"file read",Toast.LENGTH_SHORT).show();
-//            }
-//            catch(Exception e){
-//            }
-//
-//        } catch (IOException io) {
-//            io.printStackTrace();
-//        }
+    public void addItemToList(String name, String description, String dateandtime, Bitmap image, String latitude, String longitude) {
+        ItemMaster newItem = new ItemMaster(longitude, image, latitude, dateandtime, description, name);
+        ItemMaster.getItems().add(newItem);
     }
-    public String BitMapToString(Bitmap bitmap){
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-        byte [] b=baos.toByteArray();
-        String temp=Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
-    }
+//    public String BitMapToString(Bitmap bitmap){
+//        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+//        byte [] b=baos.toByteArray();
+//        String temp=Base64.encodeToString(b, Base64.DEFAULT);
+//        return temp;
+//    }
 
     public Bitmap StringToBitMap(String encodedString){
         try {
