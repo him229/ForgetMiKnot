@@ -11,19 +11,21 @@ package com.example.himankyadav.forgetmiknot;
     import android.widget.ImageView;
     import android.widget.TextView;
 
-    public class CustomListAdapter extends ArrayAdapter<String> {
+    import java.util.ArrayList;
+    import java.util.List;
+
+public class CustomListAdapter extends ArrayAdapter<String> {
 
         private final Activity context;
-        private final String[] itemname;
-        private final Integer[] imgid;
 
-        public CustomListAdapter(Activity context, String[] itemname, Integer[] imgid) {
-            super(context, R.layout.mylist, itemname);
+//        private List<ItemMaster> listOfItems = ItemMaster.getItems();
+
+        public CustomListAdapter(Activity context) {
+            super(context, R.layout.mylist);
             // TODO Auto-generated constructor stub
 
             this.context=context;
-            this.itemname=itemname;
-            this.imgid=imgid;
+
         }
 
         public View getView(int position,View view,ViewGroup parent) {
@@ -34,9 +36,10 @@ package com.example.himankyadav.forgetmiknot;
             ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
             TextView extratxt = (TextView) rowView.findViewById(R.id.ItemnameDetail);
 
-            txtTitle.setText(itemname[position]);
-            imageView.setImageResource(imgid[position]);
-            extratxt.setText("Date and Time of parking your "+itemname[position]);
+            List<ItemMaster> listOfItems = ItemMaster.getItems();
+            txtTitle.setText(listOfItems.get(position).getItemName());
+            imageView.setImageBitmap(listOfItems.get(position).getImage());
+            extratxt.setText(listOfItems.get(position).getDateandtime());
             return rowView;
 
         };

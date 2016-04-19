@@ -24,27 +24,6 @@ import static java.util.Objects.*;
 public class Main2Activity extends AppCompatActivity {
 
     ListView lv;
-    String[] itemname ={
-            "Mini Cooper",
-            "Tesla 3",
-            "BMW Series 5",
-            "Toyota Camry",
-            "Ford Fusion",
-            "Mercedes 340",
-            "Porsche Carrera",
-            "Nissan Sentra"
-    };
-
-    Integer[] imgid={
-            R.drawable.nano,
-            R.drawable.nano,
-            R.drawable.nano,
-            R.drawable.nano,
-            R.drawable.nano,
-            R.drawable.nano,
-            R.drawable.nano,
-            R.drawable.nano,
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +52,7 @@ public class Main2Activity extends AppCompatActivity {
 //                R.id.Itemname,itemname));
 
 
-        CustomListAdapter adapter=new CustomListAdapter(this, itemname, imgid);
+        CustomListAdapter adapter=new CustomListAdapter(this);
         lv.setAdapter(adapter);
         addListenerToList();
 
@@ -88,11 +67,11 @@ public class Main2Activity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // TODO Auto-generated method stub
-                String Slecteditem= itemname[+position];
+                String Slecteditem= ItemMaster.getItems().get(+position).getItemName();
                 Toast.makeText(getApplicationContext(), Slecteditem, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context,ItemDetail.class);
+                intent.putExtra("pos", position);
                 startActivity(intent);
-
             }
         });
     }

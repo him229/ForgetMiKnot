@@ -12,6 +12,9 @@ public class ItemDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_detail);
+        Intent intent = getIntent();
+        int position = intent.getIntExtra("pos", 0);
+        // Dont forget the onStart method in Main2 for refreshing list
     }
     public void viewonmapClick(View view){
         Intent intent = new Intent(this, ItemMapView.class);
