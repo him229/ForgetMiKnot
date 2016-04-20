@@ -57,8 +57,12 @@ public class MyApp extends Application {
                         ItemMaster newItemToStore = new ItemMaster(longText,imageString,latText,dandtText,descriptionText,nameText);
                         ItemMaster.getItems().add(newItemToStore);
                         Log.d("ITEM ADDED   *******  ",nameText + descriptionText + dandtText + latText + longText + imageString);
+
                     }
                     line = reader.readLine();
+                }
+                for (ItemMaster i: ItemMaster.getItems()){
+                    Log.d("INSIDE ALIST", i.getItemName());
                 }
             }
             catch (FileNotFoundException e) {

@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import android.app.ListActivity;
@@ -52,19 +53,18 @@ public class Main2Activity extends AppCompatActivity {
 //                R.id.Itemname,itemname));
 
 
-        CustomListAdapter adapter=new CustomListAdapter(this);
+        CustomListAdapter adapter=new CustomListAdapter(this,R.layout.mylist, ItemMaster.getItems());
         lv.setAdapter(adapter);
+        Log.d("GETTING HERE", "********** SETTING ADAPTER");
         addListenerToList();
-
-
     }
-    public void onStart(){
-        super.onStart();
-        CustomListAdapter adapter=new CustomListAdapter(this);
-        lv.setAdapter(adapter);
-        addListenerToList();
-        adapter.notifyDataSetChanged();
-    }
+//    public void onStart(){
+//        super.onStart();
+//        CustomListAdapter adapter=new CustomListAdapter(this);
+//        lv.setAdapter(adapter);
+//        addListenerToList();
+//        adapter.notifyDataSetChanged();
+//    }
 
     public void addListenerToList(){
         final Context context = this;
