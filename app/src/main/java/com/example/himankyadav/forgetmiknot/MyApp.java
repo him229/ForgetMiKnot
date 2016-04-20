@@ -1,6 +1,7 @@
 package com.example.himankyadav.forgetmiknot;
 
 import android.app.Application;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -21,8 +22,10 @@ import java.io.PrintWriter;
  * Created by himankyadav on 4/18/16.
  */
 public class MyApp extends Application {
+    public static MyApp instance;
     public void onCreate(){
         super.onCreate();
+        instance = this;
         File root = android.os.Environment.getExternalStorageDirectory();
         File dir = new File(root.getAbsolutePath() + "/forgetmiknot");
         dir.mkdirs();
@@ -33,26 +36,30 @@ public class MyApp extends Application {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 String line = reader.readLine();
                 while (line!=null){
-                    if (line.startsWith("<items>")){
+                    Log.d("READING LINE       ", line);
+                    Log.d("LINE LENGTH ", Integer.toString(line.length()));
+                    Log.d("BOOL VALUE       ", Boolean.toString(line.startsWith("<item>")));
+                    if (line.startsWith("<item>")){
+                        Log.d("INSIDE LOOP", "LOOP");
                         line = reader.readLine();
+                        Log.d("LINE LENGTH ", Integer.toString(line.length()));
                         String nameText = line.substring("\t<name>".length(),line.length()-"</name>\n".length());
-                        line = reader.readLine();
-                        String descriptionText = line.substring("\t<description>".length(),line.length()-"</description>\n".length());
-                        line = reader.readLine();
-                        String dandtText = line.substring("\t<dateandtime>".length(),line.length()-"</dateandtime>\n".length());
-                        line = reader.readLine();
-                        String latText = line.substring("\t<latitude>".length(),line.length()-"</latitude>\n".length());
-                        line = reader.readLine();
-                        String longText = line.substring("\t<longitude>".length(),line.length()-"</longitude>\n".length());
-                        line = reader.readLine();
-                        String imageString = line.substring("\t<image>".length(),line.length()-"</image>\n".length());
-                        Bitmap realImage = StringToBitMap(imageString);
-                        ItemMaster newItemToStore = new ItemMaster(longText,realImage,latText,dandtText,descriptionText,nameText);
-                        ItemMaster.getItems().add(newItemToStore);
+//                        line = reader.readLine();
+//                        String descriptionText = line.substring("\t<description>".length(),line.length()-"</description>\n".length());
+//                        line = reader.readLine();
+//                        String dandtText = line.substring("\t<dateandtime>".length(),line.length()-"</dateandtime>\n".length());
+//                        line = reader.readLine();
+//                        String latText = line.substring("\t<latitude>".length(),line.length()-"</latitude>\n".length());
+//                        line = reader.readLine();
+//                        String longText = line.substring("\t<longitude>".length(),line.length()-"</longitude>\n".length());
+//                        line = reader.readLine();
+//                        String imageString = line.substring("\t<image>".length(),line.length()-"</image>\n".length());
+//                        Log.d("*********INPUT       ", nameText + descriptionText + dandtText + latText + longText + imageString);
+//                        ItemMaster newItemToStore = new ItemMaster(longText,imageString,latText,dandtText,descriptionText,nameText);
+//                        ItemMaster.getItems().add(newItemToStore);
                     }
                     line = reader.readLine();
                 }
-
             }
             catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -85,47 +92,47 @@ public class MyApp extends Application {
         //dahdah parse
 
     }
-    public void onTerminate() {
-        super.onTerminate();
-        File root = android.os.Environment.getExternalStorageDirectory();
-        File dir = new File(root.getAbsolutePath() + "/forgetmiknot");
-        dir.mkdirs();
-        File file = new File(dir, "myData.txt");
-        StringBuffer dataXML = new StringBuffer();
-        dataXML.append("<?xml version=\"1.0\"?>\n");
-        try {
-            FileOutputStream f = new FileOutputStream(file);
-            PrintWriter pw = new PrintWriter(f);
-            String space =" ";
-            for (ItemMaster i : ItemMaster.getItems()) {
-                dataXML.append("<item>\n");
-                dataXML.append("\t<name>" + i.getItemName() + space + "</name>\n");
-                dataXML.append("\t<description>" + i.getDescription() + "</description>\n");
-                dataXML.append("\t<dateandtime>" + i.getDateandtime()+ "</dateandtime>\n");
-                dataXML.append("\t<latitude>" + i.getLatitute() + "</latitude>\n");
-                dataXML.append("\t<longitude>" + i.getLongitute() + "</longitude>\n");
-                if (i.getImage()==null){
-                    Bitmap converted = BitmapFactory.decodeResource(getResources(), R.drawable.baby);
-                    dataXML.append("\t<image>" + BitMapToString(converted) + "</image>\n");
-                }
-                else {
-                    dataXML.append("\t<image>" + BitMapToString(i.getImage()) + "</image>\n");
-                }
-                dataXML.append("</item>\n");
-            }
-            pw.append(dataXML.toString());
-            pw.flush();
-            pw.close();
-            f.close();
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-            Log.i("ERR: ", "******* File not found. Dammit");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
+//    public void onTerminate() {
+//        super.onTerminate();
+//        File root = android.os.Environment.getExternalStorageDirectory();
+//        File dir = new File(root.getAbsolutePath() + "/forgetmiknot");
+//        dir.mkdirs();
+//        File file = new File(dir, "myData.txt");
+//        StringBuffer dataXML = new StringBuffer();
+//        dataXML.append("<?xml version=\"1.0\"?>\n");
+//        try {
+//            FileOutputStream f = new FileOutputStream(file);
+//            PrintWriter pw = new PrintWriter(f);
+//            String space =" ";
+//            for (ItemMaster i : ItemMaster.getItems()) {
+//                dataXML.append("<item>\n");
+//                dataXML.append("\t<name>" + i.getItemName() + space + "</name>\n");
+//                dataXML.append("\t<description>" + i.getDescription() + "</description>\n");
+//                dataXML.append("\t<dateandtime>" + i.getDateandtime()+ "</dateandtime>\n");
+//                dataXML.append("\t<latitude>" + i.getLatitute() + "</latitude>\n");
+//                dataXML.append("\t<longitude>" + i.getLongitute() + "</longitude>\n");
+//                if (i.getImage()==null){
+//                    Bitmap converted = BitmapFactory.decodeResource(getResources(), R.drawable.baby);
+//                    dataXML.append("\t<image>" + BitMapToString(converted) + "</image>\n");
+//                }
+//                else {
+//                    dataXML.append("\t<image>" + BitMapToString(i.getImage()) + "</image>\n");
+//                }
+//                dataXML.append("</item>\n");
+//            }
+//            pw.append(dataXML.toString());
+//            pw.flush();
+//            pw.close();
+//            f.close();
+//        }
+//        catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//            Log.i("ERR: ", "******* File not found. Dammit");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
     public String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
@@ -143,6 +150,9 @@ public class MyApp extends Application {
             e.getMessage();
             return null;
         }
+    }
+    public Resources mygetresources(){
+        return getResources();
     }
 
 }

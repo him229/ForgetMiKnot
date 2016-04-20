@@ -58,6 +58,13 @@ public class Main2Activity extends AppCompatActivity {
 
 
     }
+    public void onStart(){
+        super.onStart();
+        CustomListAdapter adapter=new CustomListAdapter(this);
+        lv.setAdapter(adapter);
+        addListenerToList();
+        adapter.notifyDataSetChanged();
+    }
 
     public void addListenerToList(){
         final Context context = this;

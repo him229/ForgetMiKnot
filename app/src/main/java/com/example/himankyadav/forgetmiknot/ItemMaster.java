@@ -16,11 +16,11 @@ public class ItemMaster {
     String itemName = null;
     String description = null;
     String dateandtime = null;
-    Bitmap image = null;
+    String image = null;
     String latitute = null;
     String longitute = null;
 
-    public ItemMaster(String longitute, Bitmap image, String latitute, String dateandtime, String description, String itemName) {
+    public ItemMaster(String longitute, String image, String latitute, String dateandtime, String description, String itemName) {
         this.longitute = longitute;
         this.image = image;
         this.latitute = latitute;
@@ -63,10 +63,10 @@ public class ItemMaster {
     public void setDateandtime(String dateandtime) {
         this.dateandtime = dateandtime;
     }
-    public Bitmap getImage() {
+    public String getImage() {
         return image;
     }
-    public void setImage(Bitmap image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }

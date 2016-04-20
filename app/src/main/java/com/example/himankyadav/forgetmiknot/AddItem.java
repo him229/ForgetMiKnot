@@ -47,6 +47,7 @@ public class AddItem extends AppCompatActivity {
     private ImageView imgPreview;
 
     private Bitmap bitmap;
+    static String imgPath = null;
 
 
     @Override
@@ -140,8 +141,6 @@ public class AddItem extends AppCompatActivity {
             bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
                     options);
 
-
-
 ////            try
 ////            {
 //
@@ -182,9 +181,6 @@ public class AddItem extends AppCompatActivity {
 //
 //
 
-
-
-
             imgPreview.setImageResource(android.R.color.transparent);
             imgPreview.setImageBitmap(null);
             imgPreview.setImageBitmap(bitmap);
@@ -219,6 +215,9 @@ public class AddItem extends AppCompatActivity {
                 Locale.getDefault()).format(new Date());
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE) {
+            imgPath = mediaStorageDir.getPath() + File.separator
+                    + "IMG_" + timeStamp + ".jpg";
+//            Log.d("imgpath ",imgPath);
             mediaFile = new File(mediaStorageDir.getPath() + File.separator
                     + "IMG_" + timeStamp + ".jpg");
         }
@@ -233,15 +232,16 @@ public class AddItem extends AppCompatActivity {
         String itemDateandTime = ((EditText) findViewById(R.id.AddItemDateTime)).getText().toString();
         String description = ((EditText) findViewById(R.id.AddItemDescription)).getText().toString();
 
-        addItemToList(itemName, description, itemDateandTime, bitmap, "0","0");
+        addItemToList(itemName, description, itemDateandTime, imgPath, "0","0");
         Intent intent = new Intent(this, Main2Activity.class);
         startActivity(intent);
 
     }
 
-    public void addItemToList(String name, String description, String dateandtime, Bitmap image, String latitude, String longitude) {
-        ItemMaster newItem = new ItemMaster(longitude, image, latitude, dateandtime, description, name);
+    public void addItemToList(String name, String description, String dateandtime, String imagePath, String latitude, String longitude) {
+        ItemMaster newItem = new ItemMaster(longitude, imagePath, latitude, dateandtime, description, name);
         ItemMaster.getItems().add(newItem);
+        new ThreadStuff().start();
     }
 //    public String BitMapToString(Bitmap bitmap){
 //        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
