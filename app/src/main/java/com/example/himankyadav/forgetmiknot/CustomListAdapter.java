@@ -6,6 +6,7 @@ package com.example.himankyadav.forgetmiknot;
     import android.app.Activity;
     import android.graphics.Bitmap;
     import android.graphics.BitmapFactory;
+    import android.util.Log;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
@@ -41,13 +42,14 @@ public class CustomListAdapter extends ArrayAdapter<String> {
 
             List<ItemMaster> listOfItems = ItemMaster.getItems();
             txtTitle.setText(listOfItems.get(position).getItemName());
-            if (listOfItems.get(position).getImage() == null){
+            if (listOfItems.get(position).getImage() == "null"){
                 imageView.setImageResource(R.drawable.baby);
             }
             else{
 //                File imgFile = new  File(listOfItems.get(position).getImage());
 //
 //                if(imgFile.exists()){
+                Log.d("GETTING HERE", "**********");
                 Bitmap myBitmap = BitmapFactory.decodeFile(listOfItems.get(position).getImage());
                 imageView.setImageBitmap(myBitmap);
             }

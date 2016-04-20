@@ -36,27 +36,27 @@ public class MyApp extends Application {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 String line = reader.readLine();
                 while (line!=null){
-                    Log.d("READING LINE       ", line);
-                    Log.d("LINE LENGTH ", Integer.toString(line.length()));
-                    Log.d("BOOL VALUE       ", Boolean.toString(line.startsWith("<item>")));
+//                    Log.d("READING LINE       ", line);
+//                    Log.d("LINE LENGTH ", Integer.toString(line.length()));
+//                    if (line.length() >= 25){Log.d("SUBSTR VALUE       ", Integer.toString("\t<description>".length())+line.substring("\t<description>".length()));}
                     if (line.startsWith("<item>")){
-                        Log.d("INSIDE LOOP", "LOOP");
+//                        Log.d("INSIDE LOOP", "LOOP");
                         line = reader.readLine();
-                        Log.d("LINE LENGTH ", Integer.toString(line.length()));
-                        String nameText = line.substring("\t<name>".length(),line.length()-"</name>\n".length());
-//                        line = reader.readLine();
-//                        String descriptionText = line.substring("\t<description>".length(),line.length()-"</description>\n".length());
-//                        line = reader.readLine();
-//                        String dandtText = line.substring("\t<dateandtime>".length(),line.length()-"</dateandtime>\n".length());
-//                        line = reader.readLine();
-//                        String latText = line.substring("\t<latitude>".length(),line.length()-"</latitude>\n".length());
-//                        line = reader.readLine();
-//                        String longText = line.substring("\t<longitude>".length(),line.length()-"</longitude>\n".length());
-//                        line = reader.readLine();
-//                        String imageString = line.substring("\t<image>".length(),line.length()-"</image>\n".length());
-//                        Log.d("*********INPUT       ", nameText + descriptionText + dandtText + latText + longText + imageString);
-//                        ItemMaster newItemToStore = new ItemMaster(longText,imageString,latText,dandtText,descriptionText,nameText);
-//                        ItemMaster.getItems().add(newItemToStore);
+//                        Log.d("LINE LENGTH ", Integer.toString(line.length()));
+                        String nameText = line.substring("\t<name>".length(),line.length()-"</name>".length());
+                        line = reader.readLine();
+                        String descriptionText = line.substring("\t<description>".length(),line.length()-"</description>".length());
+                        line = reader.readLine();
+                        String dandtText = line.substring("\t<dateandtime>".length(),line.length()-"</dateandtime>".length());
+                        line = reader.readLine();
+                        String latText = line.substring("\t<latitude>".length(),line.length()-"</latitude>".length());
+                        line = reader.readLine();
+                        String longText = line.substring("\t<longitude>".length(),line.length()-"</longitude>".length());
+                        line = reader.readLine();
+                        String imageString = line.substring("\t<image>".length(),line.length()-"</image>".length());
+                        ItemMaster newItemToStore = new ItemMaster(longText,imageString,latText,dandtText,descriptionText,nameText);
+                        ItemMaster.getItems().add(newItemToStore);
+                        Log.d("ITEM ADDED   *******  ",nameText + descriptionText + dandtText + latText + longText + imageString);
                     }
                     line = reader.readLine();
                 }
