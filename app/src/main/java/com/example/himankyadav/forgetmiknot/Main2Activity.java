@@ -3,6 +3,7 @@ package com.example.himankyadav.forgetmiknot;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,11 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import android.app.ListActivity;
-import android.os.Bundle;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -53,10 +50,25 @@ public class Main2Activity extends AppCompatActivity {
 //                R.id.Itemname,itemname));
 
 
-        CustomListAdapter adapter=new CustomListAdapter(this,R.layout.mylist, ItemMaster.getItems());
+        final CustomListAdapter adapter=new CustomListAdapter(this,R.layout.mylist, ItemMaster.getItems());
         lv.setAdapter(adapter);
         Log.d("GETTING HERE", "********** SETTING ADAPTER");
         addListenerToList();
+        final Vibrator vibe = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE) ;
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                           int position, long arg3) {
+
+                ItemMaster.getItems().remove(position);
+                adapter.notifyDataSetChanged();
+                new ThreadStuff().start();
+                vibe.vibrate(50);
+                return false;
+            }
+
+        });
     }
 //    public void onStart(){
 //        super.onStart();
