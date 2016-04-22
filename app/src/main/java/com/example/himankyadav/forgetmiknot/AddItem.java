@@ -38,6 +38,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -201,6 +202,13 @@ public class AddItem extends AppCompatActivity {
         String itemDateandTime = ((EditText) findViewById(R.id.AddItemDateTime)).getText().toString();
         String description = ((EditText) findViewById(R.id.AddItemDescription)).getText().toString();
         String fileUriString = (fileUri==null) ? "null" : fileUri.toString();
+        if (itemDateandTime.equals("")){
+                DateFormat dateFormatter = new SimpleDateFormat("EEE, MMM dd yyyy 'at' h:mm a");
+                dateFormatter.setLenient(false);
+                Date today = new Date();
+                itemDateandTime = dateFormatter.format(today);
+        }
+        Log.d("IMGSTUFF", "datetest "+itemDateandTime);
         String lat = Double.toString(getItemLocation().getLatitude());
         String lng = Double.toString(getItemLocation().getLongitude());
         getItemLocation();
