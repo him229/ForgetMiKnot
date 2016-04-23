@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -78,6 +79,9 @@ public class MapFragment extends SupportMapFragment implements GoogleApiClient.C
 
     @Override
     public void onConnected(Bundle bundle) {
+
+//        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+//        Log.d("IMGSTUFF", "MAPFRAGMENT Enabled");
     }
 
 

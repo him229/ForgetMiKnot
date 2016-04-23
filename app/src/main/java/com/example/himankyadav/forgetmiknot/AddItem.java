@@ -1,14 +1,22 @@
 package com.example.himankyadav.forgetmiknot;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +31,7 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -55,6 +64,7 @@ public class AddItem extends AppCompatActivity {
 
 
         imgPreview = (ImageView) findViewById(R.id.AddItemImage);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     public void captureItemImage(View view){
@@ -86,7 +96,6 @@ public class AddItem extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         // save file url in bundle as it will be null on scren orientation
         // changes
         outState.putParcelable("file_uri", fileUri);
@@ -95,7 +104,6 @@ public class AddItem extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
         // get the file url
         fileUri = savedInstanceState.getParcelable("file_uri");
     }
@@ -123,30 +131,35 @@ public class AddItem extends AppCompatActivity {
 
     }
     private void previewCapturedImage() {
-        try {
-            imgPreview.setVisibility(View.VISIBLE);
+//        try {
+//            imgPreview.setVisibility(View.VISIBLE);
+
+            decodeUri(fileUri);
 
 //            Bitmap rotatedBitmap;
             // bimatp factory
-            BitmapFactory.Options options = new BitmapFactory.Options();
-
-            // downsizing image as it throws OutOfMemory Exception for larger
-            // images
-            options.inSampleSize = 8;
-
-
-
-            bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
-                    options);
-
-            imgPreview.setImageResource(android.R.color.transparent);
-            imgPreview.setImageBitmap(null);
-            imgPreview.setImageBitmap(bitmap);
-            //Make text invisible
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+//
+//            // downsizing image as it throws OutOfMemory Exception for larger
+////            // images
+////            options.inSampleSize = 8;
+////
+////
+////
+////            bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
+////                    options);
+//
+//
+//
+//            imgPreview.setImageResource(android.R.color.transparent);
+//            imgPreview.setImageBitmap(null);
+//            imgPreview.setImageBitmap(bitmap);
+//            //Make text invisible
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//        }
     }
+
 
     public Uri getOutputMediaFileUri(int type) {
         return Uri.fromFile(getOutputMediaFile(type));
@@ -188,7 +201,15 @@ public class AddItem extends AppCompatActivity {
         String itemDateandTime = ((EditText) findViewById(R.id.AddItemDateTime)).getText().toString();
         String description = ((EditText) findViewById(R.id.AddItemDescription)).getText().toString();
         String fileUriString = (fileUri==null) ? "null" : fileUri.toString();
-        addItemToList(itemName, description, itemDateandTime, fileUriString, "0","0");
+        String lat = Double.toString(getItemLocation().getLatitude());
+        String lng = Double.toString(getItemLocation().getLongitude());
+        getItemLocation();
+
+
+//        String lat = Double.toString(getLocation().getLatitude());
+//        Log.d("IMGSTUFF","after lat");
+//        String lng = Double.toString(getLocation().getLongitude());
+        addItemToList(itemName, description, itemDateandTime, fileUriString, lat,lng);
         Intent intent = new Intent(this, Main2Activity.class);
         startActivity(intent);
 
@@ -199,4 +220,88 @@ public class AddItem extends AppCompatActivity {
         ItemMaster.getItems().add(newItem);
         new ThreadStuff().start();
     }
+
+    public void decodeUri(Uri uri) {
+        ParcelFileDescriptor parcelFD = null;
+        try {
+            parcelFD = getContentResolver().openFileDescriptor(uri, "r");
+            FileDescriptor imageSource = parcelFD.getFileDescriptor();
+
+            // Decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeFileDescriptor(imageSource, null, o);
+
+            // the new size we want to scale to
+            final int REQUIRED_SIZE = 512;
+
+            // Find the correct scale value. It should be the power of 2.
+            int width_tmp = o.outWidth, height_tmp = o.outHeight;
+            int scale = 1;
+            while (true) {
+                if (width_tmp < REQUIRED_SIZE && height_tmp < REQUIRED_SIZE) {
+                    break;
+                }
+                width_tmp /= 2;
+                height_tmp /= 2;
+                scale *= 2;
+            }
+            Log.d("IMGSTUFF", "DETAIL: here");
+            // decode with inSampleSize
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            Bitmap bitmap = BitmapFactory.decodeFileDescriptor(imageSource, null, o2);
+
+            imgPreview.setImageBitmap(bitmap);
+            Log.d("IMGSTUFF", "DETAIL: Uri function set bitmap");
+
+        } catch (FileNotFoundException e) {
+            Log.d("IMGSTUFF", "File404");
+            // handle errors
+        } catch (IOException e) {
+            Log.d("IMGSTUFF", "IO Error");
+        } finally {
+            if (parcelFD != null)
+                try {
+                    parcelFD.close();
+                } catch (IOException e) {
+                    Log.d("IMGSTUFF", "IOException");
+                }
+        }
+    }
+
+    public Location getItemLocation() {
+
+        Location blank = new Location("");
+        blank.setLongitude(0);
+        blank.setLatitude(0);
+
+        ProviderLocationTracker lt = new ProviderLocationTracker(this, ProviderLocationTracker.ProviderType.GPS);
+        lt.start();
+        if(lt.hasPossiblyStaleLocation()){
+            Location loc = lt.getPossiblyStaleLocation();
+            if (loc!=null){
+                Location location = new Location("");
+                location.setLatitude(loc.getLatitude());
+                location.setLongitude(loc.getLongitude());
+                return location;
+//                Log.d("IMGSTUFF", Double.toString(loc.getLatitude()));
+            }
+            else {
+//                Log.d("IMGSTUFF", Double.toString(loc.getLatitude()));
+//                Log.d("IMGSTUFF", Double.toString(loc.getLongitude()));
+                return blank;
+            }
+        }
+        else {
+            return blank;
+        }
+//        Location loc = lt.;
+//        if (loc==null) Log.d("IMGSTUFF", "Loc in NULL");
+//        return loc;
+    }
+
+
+
+
 }
