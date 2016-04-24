@@ -3,6 +3,7 @@ package com.example.himankyadav.forgetmiknot;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,8 +18,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
 
 /**
  * Created by himankyadav on 4/11/16.
@@ -29,6 +34,8 @@ public class MapFragment extends SupportMapFragment implements GoogleApiClient.C
         GoogleMap.OnMapLongClickListener,
         GoogleMap.OnMapClickListener,
         GoogleMap.OnMarkerClickListener {
+
+    public static LatLng valLatLng;
 
     private GoogleApiClient mGoogleApiClient;
     private Location mCurrentLocation;
@@ -45,8 +52,15 @@ public class MapFragment extends SupportMapFragment implements GoogleApiClient.C
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+//        Location blank = new Location("");
+//        blank.setLongitude(0);
+//        blank.setLatitude(0);
+
+//        ItemMaster p = ItemMaster.getItems().get(3);
 
         initListeners();
+//        setMark(new LatLng(Double.valueOf(p.getLatitute()),Double.valueOf(p.getLongitute())));
+        setMark(valLatLng);
     }
 
     private void initListeners() {
@@ -108,6 +122,34 @@ public class MapFragment extends SupportMapFragment implements GoogleApiClient.C
     @Override
     public void onMapLongClick(LatLng latLng) {
 
+    }
+
+//    @Override
+//    public boolean onMarkerClick(Marker marker) {
+//        return false;
+//    }
+
+    public void setMark(LatLng latLng) {
+
+        MarkerOptions options = new MarkerOptions().position( latLng );
+        options.title( "You freaking thing is at \n"+getAddressFromLatLng( latLng ) );
+
+        options.icon( BitmapDescriptorFactory.defaultMarker() );
+        getMap().addMarker( options );
+
+    }
+    private String getAddressFromLatLng( LatLng latLng ) {
+        Geocoder geocoder = new Geocoder(getActivity());
+
+        String address = "";
+        try {
+            address = geocoder
+                    .getFromLocation(latLng.latitude, latLng.longitude, 1)
+                    .get(0).getAddressLine(0);
+        } catch (IOException e) {
+        }
+
+        return address;
     }
 
     @Override

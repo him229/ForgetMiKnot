@@ -285,20 +285,14 @@ public class AddItem extends AppCompatActivity {
                 location.setLatitude(loc.getLatitude());
                 location.setLongitude(loc.getLongitude());
                 return location;
-//                Log.d("IMGSTUFF", Double.toString(loc.getLatitude()));
             }
             else {
-//                Log.d("IMGSTUFF", Double.toString(loc.getLatitude()));
-//                Log.d("IMGSTUFF", Double.toString(loc.getLongitude()));
                 return blank;
             }
         }
         else {
             return blank;
         }
-//        Location loc = lt.;
-//        if (loc==null) Log.d("IMGSTUFF", "Loc in NULL");
-//        return loc;
     }
 
 

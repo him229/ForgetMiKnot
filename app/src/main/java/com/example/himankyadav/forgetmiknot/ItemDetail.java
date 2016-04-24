@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -21,12 +22,17 @@ import java.util.List;
 
 public class ItemDetail extends AppCompatActivity {
 
+    double lat;
+    double lng;
+
+    int pos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_detail);
         Intent intent = getIntent();
         int position = intent.getIntExtra("pos", 0);
+        pos = position;
         populateFields(position);
         // Dont forget the onStart method in Main2 for refreshing list
     }
@@ -41,6 +47,9 @@ public class ItemDetail extends AppCompatActivity {
         dandt.setText(p.getDateandtime());
         ImageView image = (ImageView) findViewById(R.id.ItemDetailImage);
         Log.d("IMGSTUFF",p.getImage() );
+        lat = Double.valueOf(p.getLatitute());
+        lng = Double.valueOf(p.getLongitute());
+//        Log.d("IMGSTUFF","LAT "+p.getLatitute());
         if (p.getImage().equals("null"))
         {
             image.setImageResource(R.drawable.baby);
@@ -52,6 +61,7 @@ public class ItemDetail extends AppCompatActivity {
 
     public void viewonmapClick(View view){
         Intent intent = new Intent(this, ItemMapView.class);
+        intent.putExtra("pos", pos);
         startActivity(intent);
     }
 
