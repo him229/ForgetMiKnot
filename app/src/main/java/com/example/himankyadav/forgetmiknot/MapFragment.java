@@ -16,6 +16,7 @@ import android.view.View;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -132,10 +133,12 @@ public class MapFragment extends SupportMapFragment implements GoogleApiClient.C
     public void setMark(LatLng latLng) {
 
         MarkerOptions options = new MarkerOptions().position( latLng );
-        options.title( "You freaking thing is at \n"+getAddressFromLatLng( latLng ) );
+        options.title( getAddressFromLatLng( latLng ) );
 
         options.icon( BitmapDescriptorFactory.defaultMarker() );
         getMap().addMarker( options );
+        getMap().moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
 
     }
     private String getAddressFromLatLng( LatLng latLng ) {
